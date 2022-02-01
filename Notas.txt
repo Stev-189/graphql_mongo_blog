@@ -1,0 +1,268 @@
+mkdir mongo_blog
+npm init -y
+npm i express graphql express-graphql mongoose jsonwebtoken dotenv cors morgan express-validator
+mkdir src
+npm  i -D nodemon @babel/core @babel/cli @babel/preset-env @babel/node @babel/plugin-transform-runtime
+mkdir src/db src/graphql src/helpers src/models src/middlewares
+brew services start mongodb-community
+mongo
+
+////////EXAMPLES////////
+
+POST////////
+mutation{
+  register(
+    username: "stev",
+    email: "fkjhdskjddhfkjh@gmail.com",
+    password: "HolamUndo_123",
+    displayname: "Stev"
+  ){
+    token
+  }
+}
+
+LOGIN////////
+mutation{
+ login(
+  email:"fkjhskjddhfkjh@gmail.com",
+  password: "HolamUndo_123",
+) {
+   status
+   msg
+   token
+ }
+}
+
+ALL USERS////////
+query{
+  users{
+    status,
+    msg,
+    data {
+      id,
+      username,
+			email,
+			displayname,
+			createdAt,
+			updatedAt,
+    }
+  }
+}
+
+FIND A USER////////
+query{
+	user(
+    id:"61f5d1cc4a90681eda42d400"
+  ) {
+	  status
+	  msg
+    data {
+      id,
+      username,
+      displayname,
+      createdAt,
+      updatedAt,
+      email
+    }
+	}
+}
+
+CREATE POST////////
+mutation{
+  createPost(
+    title:"Hpañ"
+    body:"kjajsdkfjlkasdf"
+  ){
+    status,
+    msg,
+    data{
+      id,
+      title,
+      body,
+      authorId
+    }
+  }
+}
+
+FIND ALL POST////////
+query{
+  posts{
+    status,
+    msg,
+    data{
+      id,
+      title,
+      body,
+      author{
+        id,
+        username,
+        email,
+        displayname,
+        createdAt,
+        updatedAt
+      }
+    }
+  }
+}
+
+FIND ALL POST WHITH ALL DATA/////////
+
+query{
+  posts{
+    status,
+    msg,
+    data{
+      id,
+      title,
+      body,
+      author{
+        id,
+        username,
+        email,
+        displayname,
+        createdAt,
+        updatedAt
+      },
+      comments{
+        id,
+        comment,
+        user{
+          id,
+          username
+        }
+      }
+    }
+  }
+}
+
+
+FIND A POST////////
+
+query{
+  post(id: "61f811ee95d806be0c3c63d8"){
+    data{
+      id,
+      title,
+      body
+    }
+  }
+}
+
+
+UPDATE POST////////
+
+mutation{
+  updatePost(
+    id:"61f811ee95d806be0c3c63d8",
+    title:"Update",
+    body:"Hola mundo"
+  ){
+    status,
+    msg,
+    data {
+      id,
+      title,
+      body,
+      body
+    }
+  }
+}
+
+ADD A NEW COMMENT TO POST////////
+
+mutation{
+  addComment(
+    postId:"61f811ee95d806be0c3c63d8",
+    comment: "muy buen hola mundo"
+  ),
+  {
+    status,
+    msg,
+    data{
+      id,
+      comment,
+      user{
+        id,
+        username
+      },
+    	post{
+        id,
+        title
+      }
+    }
+  }
+}
+
+QUERY ALL COMMENTS////////
+
+query{
+  comments{
+    status,
+    msg,
+    data{
+      id,
+      comment,
+      user{
+        username
+      },
+      post{
+        id
+      }
+    }
+  }
+}
+
+QUERY A COMMENT////////
+
+query{
+  comment(
+    id:"61f88ac98fbd05fca2cc1d6d"
+  ),
+  {
+    status,
+    msg,
+    data{
+      id,
+      comment,
+      user{
+        username
+      },
+      post{
+        title
+      }
+    }
+  }
+}
+
+MUTATION UPDATE COMMENT////////
+
+mutation{
+  updateComment(
+    id:"61f88ac98fbd05fca2cc1d6d",
+    comment:"Update comment a hola mundo"
+  ),
+  {
+    status,
+    msg,
+    data{
+      id,
+      comment,
+      
+    }
+  }
+}
+
+DELETE ONE COMMENT///////
+
+mutation{
+	deleteComment(
+    id:"61f88ac98fbd05fca2cc1d6d"),
+  {
+    status,
+    msg,
+    data{
+      id,
+      comment
+    }
+  }
+}
